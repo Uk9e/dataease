@@ -36,6 +36,8 @@ import java.util.regex.Pattern;
 @Component
 @Transactional(rollbackFor = Exception.class)
 public class EngineManage {
+    private static final String DEFAULT_ENGINE_URL = "jdbc:h2:/opt/dataease2.0/desktop_data;AUTO_SERVER=TRUE;AUTO_RECONNECT=TRUE;MODE=MySQL;CASE_INSENSITIVE_IDENTIFIERS=TRUE;DATABASE_TO_UPPER=FALSE";
+
     @Resource
     private Environment env;
     @Resource
@@ -44,7 +46,7 @@ public class EngineManage {
     @Resource
     private CoreDatasourceMapper datasourceMapper;
 
-    @Value("${dataease.path.engine:jdbc:h2:/opt/dataease2.0/desktop_data;AUTO_SERVER=TRUE;AUTO_RECONNECT=TRUE;MODE=MySQL;CASE_INSENSITIVE_IDENTIFIERS=TRUE;DATABASE_TO_UPPER=FALSE}")
+    @Value("${dataease.path.engine:" + DEFAULT_ENGINE_URL + "}")
     private String engineUrl;
 
     @Resource
@@ -115,6 +117,17 @@ public class EngineManage {
         }
         List<CoreDeEngine> deEngines = deEngineMapper.selectList(queryWrapper);
         if (!CollectionUtils.isEmpty(deEngines)) {
+            // Repair the old desktop default saved before a local engine path was configured.
+            if (ModelUtils.isDesktop() && !DEFAULT_ENGINE_URL.equals(engineUrl)) {
+                for (CoreDeEngine engine : deEngines) {
+                    Map<String, Object> configuration = JsonUtil.parseObject(engine.getConfiguration(), Map.class);
+                    if (configuration != null && DEFAULT_ENGINE_URL.equals(configuration.get("jdbc"))) {
+                        configuration.put("jdbc", engineUrl);
+                        engine.setConfiguration(JsonUtil.toJSONString(configuration).toString());
+                        deEngineMapper.updateById(engine);
+                    }
+                }
+            }
             return;
         }
 

@@ -1,12 +1,10 @@
 
 spring:
-
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:/opt/dataease2.0/desktop;AUTO_SERVER=TRUE;AUTO_RECONNECT=TRUE;MODE=MySQL;CASE_INSENSITIVE_IDENTIFIERS=TRUE;DATABASE_TO_UPPER=FALSE
+    url: jdbc:h2:./data/desktop;AUTO_SERVER=TRUE;AUTO_RECONNECT=TRUE;MODE=MySQL;CASE_INSENSITIVE_IDENTIFIERS=TRUE;DATABASE_TO_UPPER=FALSE
     username: sa
     password: 123456
-
   h2:
     console:
       enabled: true
@@ -20,9 +18,13 @@ spring:
     locations: classpath:db/desktop
     baseline-on-migrate: true
     out-of-order: true
-
 server:
   address: 127.0.0.1
+
+dataease:
+  path:
+    ehcache: ./data/cache
+    engine: jdbc:h2:./data/desktop_data;AUTO_SERVER=TRUE;AUTO_RECONNECT=TRUE;MODE=MySQL;CASE_INSENSITIVE_IDENTIFIERS=TRUE;DATABASE_TO_UPPER=FALSE
 
 mybatis-plus:
   mapper-locations: classpath:mybatis/*.xml
