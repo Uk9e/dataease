@@ -29,6 +29,7 @@ dist/
 package-lock.json
 .DS_Store
 .stylelintcache
+.kiro
 core/core-frontend/release/
 plugins/vite-test
 core/core-frontend/.stylelintcache
