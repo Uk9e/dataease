@@ -3,6 +3,8 @@ package io.dataease.utils;
 import io.dataease.auth.bo.TokenUserBO;
 import org.apache.commons.lang3.ObjectUtils;
 
+import java.util.Objects;
+
 public class AuthUtils {
 
     private static final Long SYS_ADMIN_UID = 1L;
@@ -33,7 +35,14 @@ public class AuthUtils {
     }
 
     public static boolean isSysAdmin(Long userId) {
-        return userId.equals(SYS_ADMIN_UID);
+        TokenUserBO user = getUser();
+        if (user != null && Boolean.TRUE.equals(user.getLink())) {
+            return false;
+        }
+        if (user != null && Objects.equals(userId, user.getUserId()) && Boolean.TRUE.equals(user.getSysAdmin())) {
+            return true;
+        }
+        return Objects.equals(userId, SYS_ADMIN_UID);
     }
 
 

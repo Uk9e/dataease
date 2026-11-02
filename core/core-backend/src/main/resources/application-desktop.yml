@@ -24,6 +24,8 @@ server:
 dataease:
   path:
     ehcache: ./data/cache
+    # 本地开发时工作目录为 core/core-backend，指向仓库根目录下的 drivers
+    driver: ../../drivers
     engine: jdbc:h2:./data/desktop_data;AUTO_SERVER=TRUE;AUTO_RECONNECT=TRUE;MODE=MySQL;CASE_INSENSITIVE_IDENTIFIERS=TRUE;DATABASE_TO_UPPER=FALSE
 
 mybatis-plus:

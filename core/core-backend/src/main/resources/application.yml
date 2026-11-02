@@ -37,12 +37,13 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
 logging:
-  file:
-    path: log
+  level:
+    io.dataease: DEBUG
+    org.springframework.web: DEBUG
 # sql日志生产环境注释掉
-mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 quartz:
   enabled: true

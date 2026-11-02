@@ -47,6 +47,7 @@ public class TokenFilter implements Filter {
                 res.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
                 return;
             }
+            request.setAttribute(AuthConstant.WHITE_LISTED_ATTRIBUTE, Boolean.TRUE);
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
@@ -64,6 +65,7 @@ public class TokenFilter implements Filter {
             return;
         }
         if (match) {
+            request.setAttribute(AuthConstant.WHITE_LISTED_ATTRIBUTE, Boolean.TRUE);
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
@@ -102,7 +104,9 @@ public class TokenFilter implements Filter {
                 algorithm.verify(decode);
                 verifier.verify(linkToken);
 
-                UserUtils.setUserInfo(new TokenUserBO(userId, oid));
+                TokenUserBO linkUser = new TokenUserBO(userId, oid);
+                linkUser.setLink(true);
+                UserUtils.setUserInfo(linkUser);
                 filterChain.doFilter(servletRequest, servletResponse);
                 return;
             }

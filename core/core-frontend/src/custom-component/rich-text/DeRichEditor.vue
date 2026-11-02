@@ -11,7 +11,6 @@ import Editor from '@tinymce/tinymce-vue'
 import 'tinymce/themes/silver'
 import 'tinymce/themes/silver/theme'
 import 'tinymce/icons/default' //引入编辑器图标icon，不引入则不显示对应图标
-import 'tinymce/models/dom' // 这里是个坑 一定要引入
 
 //在TinyMce.vue中接着引入相关插件
 import 'tinymce/icons/default/icons'

@@ -1,8 +1,11 @@
 package io.dataease.config;
 
+import io.dataease.community.permissions.security.CommunityPermissionInterceptor;
 import io.dataease.constant.AuthConstant;
 import io.dataease.share.interceptor.LinkInterceptor;
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -16,6 +19,9 @@ public class DeMvcConfig implements WebMvcConfigurer {
 
     @Resource
     private LinkInterceptor linkInterceptor;
+
+    @Autowired
+    private ObjectProvider<CommunityPermissionInterceptor> communityPermissionInterceptor;
 
     /**
      * Configuring static resource path
@@ -46,5 +52,9 @@ public class DeMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(linkInterceptor).addPathPatterns("/**");
+        CommunityPermissionInterceptor permissionInterceptor = communityPermissionInterceptor.getIfAvailable();
+        if (permissionInterceptor != null) {
+            registry.addInterceptor(permissionInterceptor).addPathPatterns("/**");
+        }
     }
 }

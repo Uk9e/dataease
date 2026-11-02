@@ -12,6 +12,10 @@
     <packaging>jar</packaging>
     <artifactId>core-backend</artifactId>
 
+    <properties>
+        <skipTests>true</skipTests>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>commons-net</groupId>
@@ -299,7 +303,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <skip>true</skip>
+                    <skip>${skipTests}</skip>
                 </configuration>
             </plugin>
             <plugin>

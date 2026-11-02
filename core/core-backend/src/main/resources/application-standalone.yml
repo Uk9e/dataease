@@ -1,7 +1,7 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/dataease10?autoReconnect=false&useUnicode=true&characterEncoding=UTF-8&characterSetResults=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
-    username: root
+    url: jdbc:mysql://localhost:3306/dataease?autoReconnect=false&useUnicode=true&characterEncoding=UTF-8&characterSetResults=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+    username: dataease_dev
     password: 123456
   messages:
     basename: i18n/lic,i18n/core,i18n/permissions,i18n/xpack,i18n/sync
@@ -17,3 +17,7 @@ mybatis-plus:
   mapper-locations: classpath:mybatis/*.xml
 
 
+
+dataease:
+  community-rbac:
+    enabled: true

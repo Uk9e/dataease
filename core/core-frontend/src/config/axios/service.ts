@@ -9,7 +9,7 @@ import axios, {
 } from 'axios'
 import { tryShowLoading, tryHideLoading } from '@/utils/loading'
 import qs from 'qs'
-import { usePermissionStoreWithOut } from '@/store/modules/permission'
+import { usePermissionStoreWithOut, getFirstAuthMenu } from '@/store/modules/permission'
 import { useEmbedded } from '@/store/modules/embedded'
 import { useLinkStoreWithOut } from '@/store/modules/link'
 import { config } from './config'
@@ -278,7 +278,8 @@ service.interceptors.response.use(
       router.push(`/login?redirect=${queryRedirectPath}`)
     }
     if (header.has('DE-FORBIDDEN-FLAG')) {
-      showMsg('当前权限不允许访问，请联系管理员', '-changed-')
+      redirectAfterForbidden()
+      return Promise.reject(error)
     }
     /* if ([400, 401].includes(error?.response.status)) {
       return Promise.reject(error)
@@ -290,6 +291,27 @@ service.interceptors.response.use(
     return Promise.resolve()
   }
 )
+
+const redirectAfterForbidden = () => {
+  const key = 'cross-permission-forbidden'
+  if (window[key]) {
+    return
+  }
+  window[key] = true
+  ElMessage({
+    type: 'warning',
+    message: '当前权限不允许访问，已返回可访问页面',
+    showClose: true
+  })
+  const firstPath = getFirstAuthMenu()
+  const currentPath = router.currentRoute.value.path
+  const targetPath = firstPath && firstPath !== currentPath ? firstPath : '/401'
+  router.replace(targetPath).finally(() => {
+    setTimeout(() => {
+      window[key] = null
+    }, 500)
+  })
+}
 
 const showMsg = (msg: string, id: string) => {
   if (window['cross-permission-' + id]) {

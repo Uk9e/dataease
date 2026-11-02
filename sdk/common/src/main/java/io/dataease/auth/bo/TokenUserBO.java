@@ -18,4 +18,13 @@ public class TokenUserBO implements Serializable {
     private Long userId;
 
     private Long defaultOid;
+
+    private Boolean sysAdmin = false;
+
+    private Boolean link = false;
+
+    public TokenUserBO(Long userId, Long defaultOid) {
+        this.userId = userId;
+        this.defaultOid = defaultOid;
+    }
 }

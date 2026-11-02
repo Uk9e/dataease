@@ -74,7 +74,9 @@ const handleSelect = (index: string) => {
   }
 }
 const initShowSystem = () => {
-  showSystem.value = permissionStore.getRouters.some(route => route.path === '/system')
+  showSystem.value = permissionStore.getRouters.some(
+    route => route.path === '/system' || route.path === '/sys-setting'
+  )
 }
 const initShowMsg = () => {
   showMsg.value = permissionStore.getRouters.some(route => route.path === '/msg')

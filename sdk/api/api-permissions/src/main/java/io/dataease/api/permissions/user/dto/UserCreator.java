@@ -25,6 +25,8 @@ public class UserCreator implements Serializable {
     private String phonePrefix;
     @Schema(description = "电话")
     private String phone;
+    @Schema(description = "登录密码（RSA 加密；编辑时留空表示不修改）")
+    private String password;
     @Schema(description = "角色ID集合", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<Long> roleIds;
     @Schema(description = "状态", requiredMode = Schema.RequiredMode.REQUIRED)

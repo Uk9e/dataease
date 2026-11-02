@@ -8,10 +8,20 @@ const appearanceStore = useAppearanceStoreWithOut()
 const navigateBg = computed(() => appearanceStore.getNavigateBg)
 const showDoc = computed(() => appearanceStore.getShowDoc)
 const { push, resolve } = useRouter()
+const targetMenu = computed(() => {
+  const organizationMenu = resolve('/system')
+  if (organizationMenu.matched.length) {
+    return organizationMenu
+  }
+  return resolve('/sys-setting')
+})
+const isSystemSetting = computed(() => targetMenu.value.path === '/sys-setting')
 const redirectUser = () => {
-  const sysMenu = resolve('/system')
-  const kidPath = sysMenu.matched[0].children[0].path
-  push(`${sysMenu.path}/${kidPath}`)
+  const sysMenu = targetMenu.value
+  const kidPath = sysMenu.matched[0]?.children[0]?.path
+  if (kidPath) {
+    push(`${sysMenu.path}/${kidPath}`)
+  }
 }
 </script>
 
@@ -20,7 +30,7 @@ const redirectUser = () => {
     offset="10"
     class="box-item"
     effect="dark"
-    :content="$t('toolbox.org_center')"
+    :content="isSystemSetting ? $t('commons.system_setting') : $t('toolbox.org_center')"
     placement="top"
   >
     <div
